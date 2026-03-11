@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Your Bag | Mbalz_Creations</title>
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Playfair+Display:wght@600&display=swap" rel="stylesheet">
+  
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+  <script type="text/javascript">
+     (function(){
+        emailjs.init("YOUR_PUBLIC_KEY"); 
+     })();
+  </script>
+
+  <style>
+    :root {
+      --primary: #ffffff;
+      --secondary: #fff0f5;
+      --pink-promo: #ffc0cb;
+      --pink-dark: #e91e63;
+      --white: #ffffff;
+      --text-main: #1a1a1a;
+      --border-light: #ffe4e1;
+    }
+
+    /* --- GENERAL RESET --- */
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Open Sans', sans-serif; }
+    body { background-color: var(--secondary); color: #333; scroll-behavior: smooth; }
+
+    /* --- STICKY TOP SECTION --- */
+    .sticky-wrapper { position: sticky; top: 0; z-index: 1000; width: 100%; }
+
+    header {
+      background: var(--primary); padding: 1rem 5%; display: flex;
+      justify-content: space-between; align-items: center; min-height: 70px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+    .brand-name { font-family: 'Playfair Display', serif; font-size: 1.5rem; color: var(--text-main); }
+    .promo-banner {
+      background-color: var(--pink-promo); color: #fff; text-align: center;
+      padding: 10px; font-size: 0.8rem; font-weight: 600; text-transform: uppercase;
+    }
+
+    /* --- CHECKOUT LAYOUT --- */
+    .container { padding: 40px 5%; max-width: 1100px; margin: auto; }
+    .checkout-grid { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 30px; }
+
+    .card { 
+      background: var(--white); border-radius: 15px; padding: 25px; 
+      box-shadow: 0 5px 20px rgba(0,0,0,0.03); border: 1px solid var(--border-light);
+      margin-bottom: 20px;
+    }
+    h3 { margin-bottom: 20px; font-size: 1.1rem; color: var(--text-main); border-bottom: 1px solid #eee; padding-bottom: 10px; }
+
+    /* --- FORM STYLING --- */
+    input, select {
+      width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #ddd;
+      border-radius: 8px; outline: none; font-size: 0.9rem;
+    }
+    label { font-size: 0.8rem; color: #666; margin-bottom: 5px; display: block; }
+
+    /* --- CART ITEMS --- */
+    .cart-item {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 15px 0; border-bottom: 1px solid #f9f9f9;
+    }
+    .cart-item strong { color: var(--text-main); font-size: 0.95rem; }
+    .qty-controls { display: flex; align-items: center; gap: 10px; }
+    .qty-btn { 
+      background: #eee; border: none; width: 25px; height: 25px; 
+      border-radius: 50%; cursor: pointer; font-weight: bold;
+    }
+    .delete-item { background: none; border: none; color: #ff4d4d; cursor: pointer; margin-left: 10px; }
+
+    /* --- TOTALS --- */
+    .summary-line { display: flex; justify-content: space-between; margin: 10px 0; font-size: 0.95rem; }
+    .total-line { 
+      display: flex; justify-content: space-between; font-weight: bold; 
+      font-size: 1.3rem; border-top: 2px solid #f0f0f0; margin-top: 20px; padding-top: 15px;
+    }
+
+    .pay-btn {
+      background: #f68b1e; color: white; border: none; padding: 18px;
+      width: 100%; border-radius: 10px; font-size: 1.1rem; font-weight: bold;
+      cursor: pointer; margin-top: 20px; transition: 0.3s;
+    }
+    .pay-btn:hover { background: #e07b16; }
+
+    .continue-btn {
+      background: none; border: 1px solid #ddd; color: #555; padding: 12px;
+      width: 100%; border-radius: 10px; cursor: pointer; margin-top: 15px;
+    }
+
+    /* --- CLEAR MODAL --- */
+    .modal {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.5); display: none; align-items: center; justify-content: center; z-index: 2000;
+    }
+    .modal.active { display: flex; }
+    .modal-content { background: white; padding: 30px; border-radius: 15px; text-align: center; }
+    .modal-btns { display: flex; gap: 10px; margin-top: 20px; }
+    .m-btn { flex: 1; padding: 10px; border-radius: 8px; border: none; cursor: pointer; }
+
+    /* --- MOBILE RESPONSIVE --- */
+    @media (max-width: 850px) {
+      .checkout-grid { grid-template-columns: 1fr; }
+      .container { padding: 20px 5%; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="sticky-wrapper">
+  <header>
+    <div class="header-left">
+      <button class="header-icon" onclick="location.href='index.html'"><i class="fas fa-arrow-left"></i></button>
+    </div>
+    <div class="header-center"><div class="brand-name">Mbalz_Creations</div></div>
+    <div class="header-right">
+      <i class="fas fa-shopping-bag"></i>
+    </div>
+  </header>
+  <div class="promo-banner">SPEND R1000 OR MORE AND GET FREE DELIVERY!</div>
+</div>
+
+<div class="container">
+  <div class="checkout-grid">
+    
+    <div class="card">
+      <h3><i class="fas fa-truck"></i> Shipping Details</h3>
+      <form id="payfast-form" action="https://www.payfast.co.za/eng/process" method="post">
+        <input type="hidden" name="merchant_id" value="YOUR_ID">
+        <input type="hidden" name="merchant_key" value="YOUR_KEY">
+        <input type="hidden" name="amount" id="pf-amount" value="0.00">
+        <input type="hidden" name="item_name" value="Mbalz Creations Order">
+
+        <div style="display:flex; gap:10px;">
+          <input type="text" id="cus-name" placeholder="First Name" required>
+          <input type="text" id="cus-surname" placeholder="Surname" required>
+        </div>
+        <input type="email" id="cus-email" placeholder="Email Address" required>
+        <input type="text" id="cus-phone" placeholder="Phone Number" required>
+        <input type="text" id="cus-address" placeholder="PAXI Point Address / Details" required>
+
+        <label>Shipping Method:</label>
+        <select id="ship-sel" onchange="updateUI()">
+          <option value="110">PAXI Standard (7-9 Days) - R110</option>
+          <option value="60">PAXI Express (3-5 Days) - R60</option>
+        </select>
+
+        <button type="button" class="pay-btn" onclick="processOrder()">Complete Payment</button>
+      </form>
+    </div>
+
+    <div class="card">
+      <h3><i class="fas fa-shopping-basket"></i> Order Summary</h3>
+      <div id="cart-list"></div>
+      
+      <div class="summary-line" style="margin-top:20px;">
+        <span>Subtotal</span>
+        <span id="sub-val">R0.00</span>
+      </div>
+      <div class="summary-line">
+        <span id="ship-name">Shipping</span>
+        <span id="ship-val">R0.00</span>
+      </div>
+
+      <div class="total-line">
+        <span>Total</span>
+        <span id="final-total">R0.00</span>
+      </div>
+      
+      <button class="continue-btn" onclick="location.href='index.html'">← Continue Shopping</button>
+      <button onclick="openModal()" style="background:none; border:none; color:#ff4d4d; cursor:pointer; width:100%; margin-top:20px; font-size:0.8rem; text-decoration: underline;">Clear All Items</button>
+    </div>
+
+  </div>
+</div>
+
+<div class="modal" id="clearModal">
+  <div class="modal-content">
+    <p>Are you sure you want to clear your cart?</p>
+    <div class="modal-btns">
+      <button class="m-btn" onclick="closeModal()">Cancel</button>
+      <button class="m-btn" style="background:red; color:white;" onclick="confirmClear()">Yes, Clear</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  let cart = JSON.parse(localStorage.getItem('mbalz_data')) || [];
+
+  function updateQty(idx, n) {
+    cart[idx].quantity += n;
+    if (cart[idx].quantity < 1) cart[idx].quantity = 1;
+    save();
+  }
+
+  function removeItem(idx) { 
+    cart.splice(idx, 1); 
+    save(); 
+  }
+
+  function save() { 
+    localStorage.setItem('mbalz_data', JSON.stringify(cart)); 
+    updateUI(); 
+  }
+
+  function updateUI() {
+    const list = document.getElementById('cart-list');
+    list.innerHTML = cart.length === 0 ? '<p style="color:gray; text-align:center;">Your bag is empty.</p>' : '';
+    
+    let sub = 0;
+    cart.forEach((it, i) => {
+      sub += it.price * it.quantity;
+      list.innerHTML += `
+      <div class="cart-item">
+        <div>
+          <strong>${it.name}</strong><br>
+          <small>${it.color}</small>
+        </div>
+        <div class="qty-controls">
+          <button class="qty-btn" onclick="updateQty(${i},-1)">-</button>
+          <span>${it.quantity}</span>
+          <button class="qty-btn" onclick="updateQty(${i},1)">+</button>
+          <button class="delete-item" onclick="removeItem(${i})"><i class="fas fa-trash-alt"></i></button>
+        </div>
+      </div>`;
+    });
+
+    const s = document.getElementById('ship-sel');
+    let sVal = parseInt(s.value);
+    
+    // FREE SHIPPING LOGIC: If spend > 1000
+    if (sub >= 1000) {
+      sVal = 0;
+      document.getElementById('ship-val').innerHTML = '<span style="color:green;">FREE</span>';
+    } else {
+      document.getElementById('ship-val').innerText = `R${sVal.toFixed(2)}`;
+    }
+
+    document.getElementById('sub-val').innerText = `R${sub.toFixed(2)}`;
+    const total = sub + (cart.length > 0 ? sVal : 0);
+    document.getElementById('final-total').innerText = `R${total.toFixed(2)}`;
+    document.getElementById('pf-amount').value = total.toFixed(2);
+  }
+
+  function processOrder() {
+    const f = document.getElementById('payfast-form');
+    const name = document.getElementById('cus-name').value;
+    const email = document.getElementById('cus-email').value;
+
+    if(!name || !email || cart.length === 0) {
+      alert("Please fill in your details and ensure your cart isn't empty.");
+      return;
+    }
+
+    let itemsText = "";
+    cart.forEach(i => itemsText += `- ${i.name} (${i.color}) x${i.quantity}\n`);
+
+    const params = {
+      customer_name: name,
+      customer_surname: document.getElementById('cus-surname').value,
+      customer_email: email,
+      customer_phone: document.getElementById('cus-phone').value,
+      shipping_address: document.getElementById('cus-address').value,
+      shipping_method: document.getElementById('ship-sel').options[document.getElementById('ship-sel').selectedIndex].text,
+      order_items: itemsText,
+      total_price: document.getElementById('final-total').innerText
+    };
+
+    // Email notification before redirecting to PayFast
+    emailjs.send('service_h5anh9n', 'template_pj7p0mj', params).then(() => { 
+      f.submit(); 
+    });
+  }
+
+  function openModal() { document.getElementById('clearModal').classList.add('active'); }
+  function closeModal() { document.getElementById('clearModal').classList.remove('active'); }
+  function confirmClear() { cart = []; save(); closeModal(); }
+
+  window.onload = updateUI;
+</script>
+
+</body>
+</html>

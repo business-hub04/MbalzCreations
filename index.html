@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mbalz_Creations | Welcome</title>
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      width: 100vw;
+      background: linear-gradient(135deg, #ffb6c1, #ffc0cb, #ff69b4);
+      background-size: 400% 400%;
+      animation: bgFlow 15s ease infinite;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: 'Playfair Display', serif;
+      overflow: hidden;
+      color: white;
+    }
+
+    @keyframes bgFlow {
+      0% {background-position: 0% 50%;}
+      50% {background-position: 100% 50%;}
+      100% {background-position: 0% 50%;}
+    }
+
+    .intro-container {
+      text-align: center;
+      position: relative;
+    }
+
+    /* --- TOSS ANIMATION --- */
+    /* Swings up and down twice like a toss */
+    .toss-animation {
+      display: inline-block;
+      animation: tossAction 2.5s ease-in-out forwards;
+      opacity: 0;
+    }
+
+    @keyframes tossAction {
+      0% { opacity: 0; transform: scale(0.5) translateY(100px); }
+      20% { opacity: 1; transform: scale(1.1) translateY(-30px); }
+      40% { transform: translateY(0); }
+      60% { transform: translateY(-20px); }
+      80% { transform: translateY(0); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    h1 {
+      font-size: 4.5rem;
+      margin: 0;
+      letter-spacing: 0.05em;
+      text-shadow: 2px 4px 10px rgba(0,0,0,0.1);
+    }
+
+    .sparkle-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
+
+    .sparkle-star {
+      position: absolute;
+      background: white;
+      border-radius: 50%;
+      box-shadow: 0 0 10px 2px white;
+      opacity: 0;
+      animation: sparkleEffect 1.5s ease-out forwards;
+    }
+
+    @keyframes sparkleEffect {
+      0% { transform: scale(0) rotate(0deg); opacity: 0; }
+      50% { opacity: 1; transform: scale(1.2); }
+      100% { transform: scale(0) rotate(180deg); opacity: 0; }
+    }
+
+    /* --- MOBILE RESPONSIVENESS --- */
+    @media screen and (max-width: 600px) {
+      h1 {
+        font-size: 2.5rem; /* Larger and clearer for mobile */
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="intro-container">
+    <div class="toss-animation">
+      <h1 id="business-name">Mbalz_Creations</h1>
+      <div class="sparkle-container" id="sparkle-container"></div>
+    </div>
+  </div>
+
+  <script>
+    const container = document.getElementById('sparkle-container');
+    const businessName = document.getElementById('business-name');
+
+    // Start sparkles after the "toss" finishes its main movement (around 2 seconds)
+    setTimeout(() => {
+      createSparkles();
+    }, 2000);
+
+    function createSparkles() {
+      const count = 15;
+      for (let i = 0; i < count; i++) {
+        const star = document.createElement('div');
+        star.classList.add('sparkle-star');
+        
+        // Random size and position around the text
+        const size = Math.random() * 8 + 4;
+        star.style.width = `${size}px`;
+        star.style.height = `${size}px`;
+        
+        star.style.left = Math.random() * 100 + "%";
+        star.style.top = Math.random() * 100 + "%";
+        
+        // Staggered appearance
+        star.style.animationDelay = (Math.random() * 0.8) + "s";
+        
+        container.appendChild(star);
+      }
+    }
+
+    // Redirect to product page after 5 seconds total
+    setTimeout(() => {
+      // Assuming your product page is named shop.html based on previous work
+      window.location.href = "shop.html"; 
+    }, 5500);
+  </script>
+
+</body>
+</html>
